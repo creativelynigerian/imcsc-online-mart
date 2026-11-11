@@ -161,7 +161,7 @@ export const products = [
     sku: 'IMCSC-GR-HNY5L',
     name: 'Pure Natural Honey (5-Litre Gallon)',
     description: 'Bulk 5-litre gallon of raw unprocessed natural bee honey. Certified pure, tamper-proof sealed for family consumption and retail.',
-    price: 22000,
+    price: 40000,
     stock: 20,
     category: 'groceries',
     image: '/assets/products/divine-pure-honey-gallon.jpg',
