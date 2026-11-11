@@ -371,7 +371,7 @@ payMethodRadios.forEach(radio => {
       labelBank.classList.add('active');
       labelPaystack.classList.remove('active');
       payBtnText.textContent = '✅ Submit Order (Pay via Bank Transfer)';
-      secureNote.textContent = '💡 Please transfer the order amount to OPay, GTBank, or UBA above and notify us via WhatsApp.';
+      secureNote.textContent = '💡 Please transfer the order amount to GTBank or UBA above and notify us via WhatsApp.';
     } else {
       bankDetailsBox.style.display = 'none';
       labelPaystack.classList.add('active');
