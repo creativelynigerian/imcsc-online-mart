@@ -50,7 +50,9 @@ const successDoneBtn = document.getElementById('success-done-btn');
 
 // Delivery cost mapping (in Naira)
 const DELIVERY_RATES = {
+  covenant: 400,
   ota: 1500,
+  bells: 1500,
   ogun_other: 2500,
   lagos: 3000,
   nationwide: 4500
