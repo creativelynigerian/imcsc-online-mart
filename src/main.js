@@ -434,8 +434,20 @@ checkoutForm.addEventListener('submit', async e => {
     console.warn('Firestore order record created locally / error:', err.message);
   }
 
+  // Trigger Telegram Instant Bot Notification
+  const notifyTelegram = (data) => {
+    fetch('/api/notify-telegram', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    }).catch(err => console.warn('Telegram notification trigger:', err));
+  };
+
   // Branch based on payment method
   if (selectedPaymentMethod === 'bank') {
+    // Notify Telegram right away for Direct Bank Transfer
+    notifyTelegram(orderData);
+
     // Complete Order via Direct Bank Transfer
     cart = [];
     updateCartUI();
@@ -473,6 +485,13 @@ checkoutForm.addEventListener('submit', async e => {
         address: address
       },
       onSuccess: function (response) {
+        // Notify Telegram with paid status and Paystack reference
+        notifyTelegram({
+          ...orderData,
+          paymentStatus: 'paid_paystack',
+          paystackRef: response.reference
+        });
+
         // Complete Order
         cart = [];
         updateCartUI();
