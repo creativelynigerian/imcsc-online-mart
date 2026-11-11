@@ -373,54 +373,6 @@ export const initialProducts = [
     "featured": false
   },
   {
-    "id": "prod-tv-32",
-    "sku": "IMCSC-EL-TV32",
-    "name": "32-inch Smart TV",
-    "description": "High-definition 32-inch Smart TV with vibrant LED display, HDMI, USB, and built-in streaming apps.",
-    "price": 126500,
-    "stock": 12,
-    "category": "electronics",
-    "image": "/assets/products/smart-tv-32inch.jpg",
-    "status": "active",
-    "featured": true
-  },
-  {
-    "id": "prod-speaker",
-    "sku": "IMCSC-EL-SPK",
-    "name": "Bluetooth Speaker",
-    "description": "Portable wireless Bluetooth speaker with deep bass, RGB LED ring light, and long battery life.",
-    "price": 28750,
-    "stock": 20,
-    "category": "electronics",
-    "image": "/assets/products/bluetooth-speaker.jpg",
-    "status": "active",
-    "featured": true
-  },
-  {
-    "id": "prod-headphones",
-    "sku": "IMCSC-EL-HDP",
-    "name": "Wireless Headphones",
-    "description": "Over-ear wireless Bluetooth headphones with comfortable cushioned earcups and premium sound quality.",
-    "price": 20700,
-    "stock": 25,
-    "category": "electronics",
-    "image": "/assets/products/wireless-headphones.jpg",
-    "status": "active",
-    "featured": true
-  },
-  {
-    "id": "prod-powerbank",
-    "sku": "IMCSC-EL-PB20K",
-    "name": "20000mAh Power Bank",
-    "description": "High-capacity 20,000mAh portable power bank with dual USB fast-charge outputs and LED battery indicators.",
-    "price": 18400,
-    "stock": 30,
-    "category": "electronics",
-    "image": "/assets/products/power-bank-20000mah.jpg",
-    "status": "active",
-    "featured": true
-  },
-  {
     "id": "prod-02",
     "sku": "IMCSC-BE-02",
     "name": "Face Powder Compact",
