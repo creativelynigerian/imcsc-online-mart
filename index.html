@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IMCSC Global Mart — Ota, Ogun State</title>
+  <meta name="description" content="Shop quality groceries, electronics, household essentials, books, snacks, and fashion at IMCSC Global Mart, Ota, Ogun State, Nigeria." />
+  <link rel="icon" type="image/png" href="/favicon.png" />
+  <link rel="apple-touch-icon" href="/favicon.png" />
+  <link rel="stylesheet" href="/src/styles.css" />
+  <!-- Paystack Inline Popup JS -->
+  <script src="https://js.paystack.co/v1/inline.js"></script>
+</head>
+<body>
+  <!-- Top announcement bar -->
+  <aside class="top-bar" aria-label="Store contacts">
+    <div class="top-bar-inner">
+      <span>📍 <strong>Shop:</strong> Opp. Cisco Center, CEDS Building, Covenant University, Ota, Ogun State</span>
+      <div class="top-contacts">
+        <a href="tel:+2347035129387">📞 +234 703 512 9387</a>
+        <a href="tel:+2347018327654">📞 +234 701 832 7654</a>
+        <a href="mailto:ceoccyige@gmail.com">✉️ ceoccyige@gmail.com</a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Sticky Main Header -->
+  <header class="app-header">
+    <div class="header-container">
+      <a href="/" class="logo" aria-label="IMCSC Global Mart / CCYI Global Enterprise">
+        <img src="/assets/logo.png" alt="CCYI Global Enterprise Logo" class="brand-logo-img" />
+        <div class="logo-text">
+          <span class="logo-bold">IMCSC</span>
+          <span class="logo-sub">GLOBAL MART</span>
+        </div>
+      </a>
+
+      <div class="search-box">
+        <input id="search-input" type="search" placeholder="Search 40+ products, electronics, household essentials..." autocomplete="off" />
+        <button id="search-clear-btn" class="clear-btn" style="display:none;" title="Clear search">✕</button>
+      </div>
+
+      <button id="cart-btn" class="cart-btn" aria-label="Shopping Cart">
+        <span class="cart-icon">🛒</span>
+        <span class="cart-label">Cart</span>
+        <span id="cart-count" class="cart-count-badge">0</span>
+      </button>
+    </div>
+
+    <!-- Category filter pills -->
+    <nav class="categories-bar" aria-label="Product categories">
+      <button class="cat-pill active" data-cat="all">All Products</button>
+      <button class="cat-pill" data-cat="books">Books</button>
+      <button class="cat-pill" data-cat="snacks">Snacks</button>
+      <button class="cat-pill" data-cat="household">Household</button>
+      <button class="cat-pill" data-cat="electronics">Electronics</button>
+      <button class="cat-pill" data-cat="groceries">Groceries</button>
+      <button class="cat-pill" data-cat="fashion">Fashion</button>
+      <button class="cat-pill" data-cat="beauty">Beauty & Care</button>
+    </nav>
+  </header>
+
+  <!-- Flash Deals & Fast Delivery Ribbon -->
+  <section class="flash-ribbon">
+    <div class="ribbon-item">⚡ <strong>Deals of the Day:</strong> Fast delivery within Ota & nationwide shipping</div>
+    <div class="ribbon-item timer">🔥 Special offers refresh in <span id="flash-timer">02:45:12</span></div>
+  </section>
+
+  <!-- Main Product Storefront -->
+  <main class="store-container">
+    <div class="catalog-heading">
+      <div>
+        <h1 id="catalog-title">All Products</h1>
+        <p id="catalog-subtitle" class="subtitle">Showing available inventory from our Ota store</p>
+      </div>
+      <div class="filter-controls">
+        <label for="sort-select">Sort by:</label>
+        <select id="sort-select">
+          <option value="featured">Featured First</option>
+          <option value="price-asc">Price: Low to High</option>
+          <option value="price-desc">Price: High to Low</option>
+          <option value="name">Product Name (A-Z)</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Grid Container -->
+    <div id="product-grid" class="product-grid">
+      <!-- Injected by JavaScript -->
+    </div>
+
+    <!-- Empty state message -->
+    <div id="empty-state" class="empty-state" style="display: none;">
+      <p class="empty-icon">🔍</p>
+      <h3>No products found</h3>
+      <p>Try searching for something else or pick a different category.</p>
+    </div>
+  </main>
+
+  <!-- Bottom Floating Cart Summary Bar for Mobile -->
+  <div class="mobile-cart-bar" id="mobile-cart-bar" style="display:none;">
+    <div class="mobile-cart-info">
+      <span id="mobile-cart-count">0 items</span>
+      <strong id="mobile-cart-total">₦0</strong>
+    </div>
+    <button id="mobile-checkout-btn" class="btn-primary">View Cart / Checkout</button>
+  </div>
+
+  <!-- Cart Drawer / Modal -->
+  <div id="cart-drawer-overlay" class="drawer-overlay" style="display:none;">
+    <aside class="cart-drawer">
+      <div class="drawer-header">
+        <h2>Your Shopping Cart (<span id="drawer-cart-count">0</span>)</h2>
+        <button id="close-cart-btn" class="close-btn" aria-label="Close cart">✕</button>
+      </div>
+
+      <div id="cart-items-container" class="cart-items">
+        <!-- Rendered items -->
+      </div>
+
+      <div class="drawer-footer">
+        <div class="summary-line">
+          <span>Subtotal:</span>
+          <strong id="cart-subtotal">₦0</strong>
+        </div>
+        <div class="summary-line muted-text">
+          <span>Delivery (Ota / Nationwide):</span>
+          <span>Calculated at checkout</span>
+        </div>
+        <button id="open-checkout-modal-btn" class="btn-checkout">Proceed to Checkout</button>
+        <button id="clear-cart-btn" class="btn-text">Clear Cart</button>
+      </div>
+    </aside>
+  </div>
+
+  <!-- Checkout Modal with Paystack Integration -->
+  <div id="checkout-modal" class="modal-overlay" style="display:none;">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2>Complete Your Order</h2>
+        <button id="close-checkout-btn" class="close-btn">✕</button>
+      </div>
+
+      <form id="checkout-form" class="checkout-form">
+        <div class="form-section">
+          <h3>Customer Contact</h3>
+          <div class="form-group">
+            <label for="cust-name">Full Name *</label>
+            <input type="text" id="cust-name" required placeholder="e.g. Adebayo Johnson" />
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="cust-phone">WhatsApp / Phone Number *</label>
+              <input type="tel" id="cust-phone" required placeholder="e.g. 08012345678" />
+            </div>
+            <div class="form-group">
+              <label for="cust-email">Email Address *</label>
+              <input type="email" id="cust-email" required placeholder="name@example.com" />
+            </div>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <h3>Delivery Address</h3>
+          <div class="form-group">
+            <label for="cust-state">Delivery Region *</label>
+            <select id="cust-state" required>
+              <option value="ota">Ota & Environs (Ogun State) — ₦1,500</option>
+              <option value="ogun_other">Other Parts of Ogun State — ₦2,500</option>
+              <option value="lagos">Lagos State — ₦3,000</option>
+              <option value="nationwide">Nationwide Courier (Other States) — ₦4,500</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="cust-address">Street Address / Landmark *</label>
+            <textarea id="cust-address" rows="2" required placeholder="House number, street name, nearest bus stop or landmark"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="cust-notes">Order Notes (Optional)</label>
+            <input type="text" id="cust-notes" placeholder="Special delivery instructions or preferences" />
+          </div>
+        </div>
+
+        <!-- Payment Method Selection -->
+        <div class="form-section">
+          <h3>Payment Method</h3>
+          <div class="payment-method-selector">
+            <label class="pay-radio-label active" id="label-paystack">
+              <input type="radio" name="pay-method" value="paystack" checked />
+              <span>💳 Pay Online (Paystack Cards, Transfer, USSD)</span>
+            </label>
+            <label class="pay-radio-label" id="label-bank">
+              <input type="radio" name="pay-method" value="bank" />
+              <span>🏛️ Direct Bank Transfer</span>
+            </label>
+          </div>
+
+          <!-- Bank Account Details Card (shown when bank transfer is chosen) -->
+          <div id="bank-details-box" class="bank-details-box" style="display:none;">
+            <div class="bank-box-header">
+              <strong>Official IMCSC Mart Accounts</strong>
+              <small>Transfer the exact order total to any of our accounts below:</small>
+            </div>
+            
+            <div class="bank-account-card">
+              <div class="bank-name-badge opay">OPay / Paycom</div>
+              <div class="bank-info-lines">
+                <div class="acc-row"><span>Account Name:</span> <strong>Olukayode Daniel</strong></div>
+                <div class="acc-row">
+                  <span>Account Number:</span> 
+                  <strong class="acc-num" id="opay-acc">8035690386</strong>
+                  <button type="button" class="copy-acc-btn" data-copy="8035690386">📋 Copy</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="bank-account-card">
+              <div class="bank-name-badge gtbank">GTBank</div>
+              <div class="bank-info-lines">
+                <div class="acc-row"><span>Account Name:</span> <strong>Impact Makers Creativity Services Co</strong></div>
+                <div class="acc-row">
+                  <span>Account Number:</span> 
+                  <strong class="acc-num" id="gtb-acc">0131301273</strong>
+                  <button type="button" class="copy-acc-btn" data-copy="0131301273">📋 Copy</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="bank-account-card">
+              <div class="bank-name-badge uba">UBA (United Bank for Africa)</div>
+              <div class="bank-info-lines">
+                <div class="acc-row"><span>Account Name:</span> <strong>CCYI Global Enterprise</strong></div>
+                <div class="acc-row">
+                  <span>Account Number:</span> 
+                  <strong class="acc-num" id="uba-acc">1017417609</strong>
+                  <button type="button" class="copy-acc-btn" data-copy="1017417609">📋 Copy</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="bank-instructions">
+              <p>💡 <em>After making your transfer, click the button below to submit your order and send your proof of payment on WhatsApp to <strong>+234 703 512 9387</strong> or <strong>+234 701 832 7654</strong>.</em></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="order-summary-box">
+          <div class="summary-line">
+            <span>Items Subtotal:</span>
+            <span id="order-subtotal">₦0</span>
+          </div>
+          <div class="summary-line">
+            <span>Delivery Fee:</span>
+            <span id="order-delivery">₦1,500</span>
+          </div>
+          <div class="summary-line grand-total">
+            <span>Total to Pay:</span>
+            <span id="order-total">₦0</span>
+          </div>
+        </div>
+
+        <div class="checkout-actions">
+          <button type="submit" id="pay-btn" class="btn-pay">
+            <span id="pay-btn-text">🔒 Pay with Paystack (Cards, Transfer, USSD)</span>
+          </button>
+          <p class="secure-badge" id="secure-note">🛡️ Secured via Paystack 256-bit SSL encryption. Price & stock server-verified.</p>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Order Confirmation Modal -->
+  <div id="success-modal" class="modal-overlay" style="display:none;">
+    <div class="modal-card text-center">
+      <div class="success-icon">🎉</div>
+      <h2>Order Received!</h2>
+      <p class="order-ref-text">Order Reference: <strong id="success-order-id">IMCSC-000000</strong></p>
+      <p>Thank you for shopping with <strong>IMCSC Global Mart</strong>! We have received your order details and payment confirmation.</p>
+      <div class="next-steps-card">
+        <p><strong>What happens next?</strong></p>
+        <p>Our sales team will verify your package and dispatch via our dispatch rider or delivery courier.</p>
+        <p>Need urgent help? Call/WhatsApp: <strong>+234 703 512 9387</strong> / <strong>+234 701 832 7654</strong></p>
+      </div>
+      <button id="success-done-btn" class="btn-primary">Continue Shopping</button>
+    </div>
+  </div>
+
+  <!-- Site Footer -->
+  <footer class="app-footer">
+    <div class="footer-container">
+      <div class="footer-col brand-col">
+        <div class="footer-brand-row">
+          <img src="/assets/logo.png" alt="CCYI Global Enterprise" class="footer-logo-img" />
+          <div>
+            <h3>IMCSC Global Mart</h3>
+            <span class="footer-sub">CCYI Global Enterprise</span>
+          </div>
+        </div>
+        <p>Your trusted shopping destination for quality groceries, electronics, books, snacks, fashion, and home supplies in Ogun State and across Nigeria.</p>
+        <p class="address">📍 <strong>Shop Address:</strong> Opp. Cisco Center, CEDS Building, Covenant University, Ota, Ogun State</p>
+      </div>
+      <div class="footer-col">
+        <h3>Customer Support</h3>
+        <p>📞 Phone: <a href="tel:+2347035129387" style="color:#cbd5e1; text-decoration:none;">+234 703 512 9387</a></p>
+        <p>📞 Phone: <a href="tel:+2347018327654" style="color:#cbd5e1; text-decoration:none;">+234 701 832 7654</a></p>
+        <p>✉️ Email: ceoccyige@gmail.com</p>
+        <p>⏰ Mon - Sat: 8:00 AM – 7:00 PM</p>
+      </div>
+      <div class="footer-col">
+        <h3>Official Bank Accounts</h3>
+        <p style="color:#cbd5e1;">Available upon checkout for direct bank transfers, or contact our support team.</p>
+      </div>
+      <div class="footer-col">
+        <h3>Quick Links</h3>
+        <ul class="footer-links">
+          <li><a href="#" class="cat-pill-link" data-cat="all">Catalogue</a></li>
+          <li><a href="#" id="footer-cart-link">View Cart</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 IMCSC Global Mart. All rights reserved. Secure Nigerian payments via Paystack.</p>
+    </div>
+  </footer>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

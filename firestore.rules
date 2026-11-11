@@ -1,0 +1,30 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Check if requester is signed in as admin
+    function isAdmin() {
+      return request.auth != null && request.auth.token.email == 'ceoccyige@gmail.com';
+    }
+
+    // Products: anyone can read active products. Only admin can create, update, or delete.
+    match /products/{productId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Orders: anyone can create a new pending order.
+    // Only admin can read all orders, update status (e.g. Paid, Shipped, Delivered) or delete.
+    match /orders/{orderId} {
+      allow create: if request.resource.data.status == 'Pending' 
+                    && request.resource.data.paymentStatus in ['pending', 'paid_pending_verification'];
+      allow read, update, delete: if isAdmin();
+    }
+
+    // Store settings & metadata:
+    match /settings/{settingId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+  }
+}
