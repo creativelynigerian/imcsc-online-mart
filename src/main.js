@@ -401,108 +401,139 @@ document.addEventListener('click', e => {
 checkoutForm.addEventListener('submit', async e => {
   e.preventDefault();
 
-  const name = document.getElementById('cust-name').value.trim();
-  const phone = document.getElementById('cust-phone').value.trim();
-  const email = document.getElementById('cust-email').value.trim();
-  const address = document.getElementById('cust-address').value.trim();
-  const notes = document.getElementById('cust-notes').value.trim();
-  const region = custStateSelect.value;
-  const delivery = DELIVERY_RATES[region] || 1500;
-  const subtotal = cart.reduce((s, i) => s + (i.price || 0) * i.qty, 0);
-  const total = subtotal + delivery;
-
-  const orderId = 'IMCSC-' + Math.floor(100000 + Math.random() * 900000);
-  const selectedPaymentMethod = document.querySelector('input[name="pay-method"]:checked')?.value || 'paystack';
-
-  const orderData = {
-    orderId,
-    customer: { name, phone, email, address, region, notes },
-    items: cart,
-    subtotal,
-    deliveryFee: delivery,
-    total,
-    status: 'Pending',
-    paymentMethod: selectedPaymentMethod,
-    paymentStatus: selectedPaymentMethod === 'bank' ? 'awaiting_bank_transfer' : 'pending',
-    createdAt: serverTimestamp()
-  };
-
-  // Submit to Firestore
-  try {
-    await addDoc(collection(db, 'orders'), orderData);
-  } catch (err) {
-    console.warn('Firestore order record created locally / error:', err.message);
+  const submitBtn = document.getElementById('pay-btn');
+  const originalBtnHtml = submitBtn ? submitBtn.innerHTML : '';
+  if (submitBtn) {
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<span>⏳ Processing order...</span>';
   }
 
-  // Trigger Telegram Instant Bot Notification
-  const notifyTelegram = (data) => {
-    fetch('/api/notify-telegram', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
-    }).catch(err => console.warn('Telegram notification trigger:', err));
-  };
+  try {
+    const name = document.getElementById('cust-name').value.trim();
+    const phone = document.getElementById('cust-phone').value.trim();
+    const email = document.getElementById('cust-email').value.trim();
+    const address = document.getElementById('cust-address').value.trim();
+    const notes = document.getElementById('cust-notes').value.trim();
+    const region = custStateSelect.value;
+    const delivery = DELIVERY_RATES[region] || 1500;
+    const subtotal = cart.reduce((s, i) => s + (i.price || 0) * i.qty, 0);
+    const total = subtotal + delivery;
 
-  // Branch based on payment method
-  if (selectedPaymentMethod === 'bank') {
-    // Notify Telegram right away for Direct Bank Transfer
-    notifyTelegram(orderData);
+    const orderId = 'IMCSC-' + Math.floor(100000 + Math.random() * 900000);
+    const selectedPaymentMethod = document.querySelector('input[name="pay-method"]:checked')?.value || 'paystack';
 
-    // Complete Order via Direct Bank Transfer
-    cart = [];
-    updateCartUI();
-    checkoutModal.style.display = 'none';
-    successOrderId.textContent = orderId;
-    
-    // Format WhatsApp confirmation link
-    const waText = encodeURIComponent(
-      `Hello IMCSC Global Mart! I have placed Order ${orderId} for ${formatNaira(total)} via Bank Transfer.\nName: ${name}\nPhone: ${phone}\nAddress: ${address}\nI am sending my proof of payment.`
-    );
-    
-    const nextStepsCard = document.querySelector('.next-steps-card');
-    if (nextStepsCard) {
-      nextStepsCard.innerHTML = `
-        <p><strong>Next Step for Bank Transfer:</strong></p>
-        <p>Please send your payment receipt/screenshot on WhatsApp with your Order Reference <strong>${orderId}</strong>.</p>
-        <p style="margin-top:10px;">
-          <a href="https://wa.me/2347035129387?text=${waText}" target="_blank" class="btn-primary" style="display:inline-block; text-decoration:none; padding:8px 16px; font-size:13px; background:#25d366; border:none;">
-            💬 Send Receipt on WhatsApp (+234 703 512 9387)
-          </a>
-        </p>
-      `;
-    }
-    
-    successModal.style.display = 'flex';
-  } else {
-    // Trigger Paystack Inline Payment
-    openPaystackPayment({
-      email,
-      amount: total,
+    const orderData = {
       orderId,
-      metadata: {
-        customerName: name,
-        customerPhone: phone,
-        address: address
-      },
-      onSuccess: function (response) {
-        // Notify Telegram with paid status and Paystack reference
-        notifyTelegram({
-          ...orderData,
-          paymentStatus: 'paid_paystack',
-          paystackRef: response.reference
-        });
+      customer: { name, phone, email, address, region, notes },
+      items: [...cart],
+      subtotal,
+      deliveryFee: delivery,
+      total,
+      status: 'Pending',
+      paymentMethod: selectedPaymentMethod,
+      paymentStatus: selectedPaymentMethod === 'bank' ? 'awaiting_bank_transfer' : 'pending',
+      createdAt: serverTimestamp ? serverTimestamp() : new Date().toISOString()
+    };
 
-        // Complete Order
-        cart = [];
-        updateCartUI();
-        checkoutModal.style.display = 'none';
-        successOrderId.textContent = orderId;
-        successModal.style.display = 'flex';
-      },
-      onClose: function () {
-        alert('Payment was not completed. You can re-open checkout whenever you are ready.');
+    // Save to Firestore with timeout fallback so slow network never freezes the button
+    const saveToFirestore = async () => {
+      try {
+        const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject(new Error('Firestore timeout')), 3000));
+        await Promise.race([
+          addDoc(collection(db, 'orders'), orderData),
+          timeoutPromise
+        ]);
+      } catch (err) {
+        console.warn('Firestore order record created locally / error:', err.message);
       }
-    });
+    };
+    saveToFirestore();
+
+    // Trigger Telegram Instant Bot Notification
+    const notifyTelegram = (data) => {
+      fetch('/api/notify-telegram', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      }).catch(err => console.warn('Telegram notification trigger:', err));
+    };
+
+    // Branch based on payment method
+    if (selectedPaymentMethod === 'bank') {
+      // Notify Telegram right away for Direct Bank Transfer
+      notifyTelegram(orderData);
+
+      // Complete Order via Direct Bank Transfer
+      cart = [];
+      updateCartUI();
+      checkoutModal.style.display = 'none';
+      successOrderId.textContent = orderId;
+      
+      // Format WhatsApp confirmation link
+      const waText = encodeURIComponent(
+        `Hello IMCSC Global Mart! I have placed Order ${orderId} for ${formatNaira(total)} via Bank Transfer.\nName: ${name}\nPhone: ${phone}\nAddress: ${address}\nI am sending my proof of payment.`
+      );
+      
+      const nextStepsCard = document.querySelector('.next-steps-card');
+      if (nextStepsCard) {
+        nextStepsCard.innerHTML = `
+          <p><strong>Next Step for Bank Transfer:</strong></p>
+          <p>Please send your payment receipt/screenshot on WhatsApp with your Order Reference <strong>${orderId}</strong>.</p>
+          <p style="margin-top:10px;">
+            <a href="https://wa.me/2347035129387?text=${waText}" target="_blank" class="btn-primary" style="display:inline-block; text-decoration:none; padding:8px 16px; font-size:13px; background:#25d366; border:none;">
+              💬 Send Receipt on WhatsApp (+234 703 512 9387)
+            </a>
+          </p>
+        `;
+      }
+      
+      successModal.style.display = 'flex';
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalBtnHtml;
+      }
+    } else {
+      // Trigger Paystack Inline Payment
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalBtnHtml;
+      }
+      openPaystackPayment({
+        email,
+        amount: total,
+        orderId,
+        metadata: {
+          customerName: name,
+          customerPhone: phone,
+          address: address
+        },
+        onSuccess: function (response) {
+          // Notify Telegram with paid status and Paystack reference
+          notifyTelegram({
+            ...orderData,
+            paymentStatus: 'paid_paystack',
+            paystackRef: response.reference
+          });
+
+          // Complete Order
+          cart = [];
+          updateCartUI();
+          checkoutModal.style.display = 'none';
+          successOrderId.textContent = orderId;
+          successModal.style.display = 'flex';
+        },
+        onClose: function () {
+          alert('Payment was not completed. You can re-open checkout whenever you are ready.');
+        }
+      });
+    }
+  } catch (err) {
+    console.error('Checkout error:', err);
+    alert('An unexpected error occurred. Please try again or place your order via WhatsApp.');
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = originalBtnHtml;
+    }
   }
 });
 
