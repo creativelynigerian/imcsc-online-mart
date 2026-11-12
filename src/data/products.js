@@ -653,6 +653,22 @@ export const initialProducts = [
     "badgeText": "📚 Amazon Kindle",
     "btnLabel": "Buy on Amazon ↗",
     "btnClass": "btn-amazon"
+  },
+  {
+    "id": "partner-darling-gift-store",
+    "sku": "PARTNER-DARLING-GIFTS",
+    "name": "Darling's Gift Store",
+    "description": "The home of love in gift form. Curated gift items, souvenirs, gift boxes & packages on Telegram.",
+    "price": 0,
+    "category": "partners",
+    "image": "/assets/products/darling-gift-store.jpg",
+    "status": "active",
+    "featured": false,
+    "externalUrl": "https://t.me/DarlingGiftStore",
+    "externalPlatform": "Telegram Store",
+    "badgeText": "🎁 Gifts & Souvenirs",
+    "btnLabel": "Visit on Telegram ↗",
+    "btnStyle": "background:#229ED9; color:#fff;"
   }
 ];
 export const products = initialProducts;
