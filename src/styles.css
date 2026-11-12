@@ -993,6 +993,36 @@ body {
 .footer-links a:hover {
   color: var(--gold);
 }
+.partner-card {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(212, 175, 55, 0.25);
+  border-radius: 8px;
+  padding: 12px;
+  transition: all 0.2s ease;
+}
+.partner-card:hover {
+  border-color: var(--gold);
+  background: rgba(255, 255, 255, 0.08);
+}
+.partner-store-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: linear-gradient(135deg, var(--gold) 0%, #b89728 100%);
+  color: #132a13 !important;
+  font-weight: 700;
+  font-size: 12px;
+  padding: 6px 14px;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+.partner-store-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(212, 175, 55, 0.3);
+  color: #0b1a0b !important;
+}
 .footer-bottom {
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   text-align: center;
