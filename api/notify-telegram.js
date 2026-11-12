@@ -27,7 +27,7 @@ export default async function handler(req, res) {
       : '💳 *Paystack Online* (Paid / Secured)';
 
     const message = 
-`🛍️ *NEW ORDER RECEIVED! — IMCSC Global Mart*
+`🛍️ *NEW ORDER RECEIVED! — Impact Makers CSC Mart*
 
 🧾 *Order Ref:* \`${orderId}\`
 💰 *Total:* *${formatNaira(total)}*

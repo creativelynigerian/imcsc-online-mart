@@ -1,4 +1,4 @@
-// IMCSC Global Mart — Admin Control Center Logic
+// Impact Makers CSC Mart — Admin Control Center Logic
 import { 
   auth, 
   db, 

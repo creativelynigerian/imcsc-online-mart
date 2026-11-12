@@ -1,4 +1,4 @@
-// IMCSC Global Mart — Customer Storefront Controller
+// Impact Makers CSC Mart — Customer Storefront Controller
 import { 
   db, 
   collection, 
@@ -253,7 +253,7 @@ function removeFromCart(sku) {
 function inquireWhatsApp(sku) {
   const product = allProducts.find(p => p.sku === sku);
   const text = encodeURIComponent(
-    `Hello IMCSC Global Mart! I am interested in ordering: "${product ? product.name : sku}" (SKU: ${sku}). Please share the current price and availability.`
+    `Hello Impact Makers CSC Mart! I am interested in ordering: "${product ? product.name : sku}" (SKU: ${sku}). Please share the current price and availability.`
   );
   window.open(`https://wa.me/2347035129387?text=${text}`, '_blank');
 }
@@ -471,7 +471,7 @@ checkoutForm.addEventListener('submit', async e => {
       
       // Format WhatsApp confirmation link
       const waText = encodeURIComponent(
-        `Hello IMCSC Global Mart! I have placed Order ${orderId} for ${formatNaira(total)} via Bank Transfer.\nName: ${name}\nPhone: ${phone}\nAddress: ${address}\nI am sending my proof of payment.`
+        `Hello Impact Makers CSC Mart! I have placed Order ${orderId} for ${formatNaira(total)} via Bank Transfer.\nName: ${name}\nPhone: ${phone}\nAddress: ${address}\nI am sending my proof of payment.`
       );
       
       const nextStepsCard = document.querySelector('.next-steps-card');
