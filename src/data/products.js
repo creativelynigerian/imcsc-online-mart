@@ -669,6 +669,22 @@ export const initialProducts = [
     "badgeText": "🎁 Gifts & Souvenirs",
     "btnLabel": "Visit on Telegram ↗",
     "btnStyle": "background:#229ED9; color:#fff;"
+  },
+  {
+    "id": "event-agis-2026",
+    "sku": "EVENT-AGIS-2026",
+    "name": "Accelerate Global Impact Summit 2026 (AGIS) — FRESH OIL",
+    "description": "Annual youth empowerment summit inspiring Christ, Character, Competence and Capacity. 27th–28th November 2026 at Access Chapel Auditorium, Ogun State. Powered by CCYI Global & Access Chapel.",
+    "price": 0,
+    "category": "partners",
+    "image": "/assets/products/agis-2026-banner.jpg",
+    "status": "active",
+    "featured": true,
+    "externalUrl": "https://agis.ccyiglobalentwebng.com.ng",
+    "externalPlatform": "AGIS 2026 Summit",
+    "badgeText": "🎟️ Event • 27–28 Nov",
+    "btnLabel": "Register for Summit ↗",
+    "btnStyle": "background: linear-gradient(135deg, #d97706, #b45309); color:#fff; font-weight:800;"
   }
 ];
 export const products = initialProducts;
