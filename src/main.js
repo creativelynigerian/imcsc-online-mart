@@ -76,10 +76,14 @@ function formatNaira(n) {
   }).format(n);
 }
 
-// 1. Fetch live products from Firestore (falls back to initial 42 local products)
+// 1. Fetch live products from Firestore (falls back to initial local products)
 async function loadProducts() {
   try {
-    const querySnapshot = await getDocs(collection(db, 'products'));
+    // 3-second timeout guard so network latency never blocks user experience
+    const querySnapshot = await Promise.race([
+      getDocs(collection(db, 'products')),
+      new Promise((_, reject) => setTimeout(() => reject(new Error('Firestore network timeout')), 3000))
+    ]);
     if (!querySnapshot.empty) {
       const fetched = [];
       querySnapshot.forEach(doc => {
@@ -89,11 +93,11 @@ async function loadProducts() {
       const fetchedSkus = new Set(fetched.map(p => p.sku || p.id));
       const remainingInitial = initialProducts.filter(p => !fetchedSkus.has(p.sku || p.id));
       allProducts = [...fetched, ...remainingInitial];
+      applyFiltersAndRender();
     }
   } catch (err) {
-    console.info('Using local catalogue data:', err.message);
+    console.info('Using fast local catalogue data:', err.message);
   }
-  applyFiltersAndRender();
 }
 
 // 2. Filter & Sort Logic
@@ -608,6 +612,9 @@ setInterval(() => {
   if (timerEl) timerEl.textContent = `${h}:${m}:${s}`;
 }, 1000);
 
-// Initialize
-loadProducts();
+// Initialize: Render immediately (0ms instant display) with bundled catalogue
+applyFiltersAndRender();
 updateCartUI();
+
+// Then asynchronously check Firestore for live updates in the background
+loadProducts();
