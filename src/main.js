@@ -83,8 +83,10 @@ async function loadProducts() {
       querySnapshot.forEach(doc => {
         fetched.push({ id: doc.id, ...doc.data() });
       });
-      // Replace or merge with firestore products
-      allProducts = fetched;
+      // Replace or merge with firestore products, keeping local affiliate/partner items intact
+      const fetchedSkus = new Set(fetched.map(p => p.sku || p.id));
+      const remainingInitial = initialProducts.filter(p => !fetchedSkus.has(p.sku || p.id));
+      allProducts = [...fetched, ...remainingInitial];
     }
   } catch (err) {
     console.info('Using local catalogue data:', err.message);
@@ -102,6 +104,7 @@ function applyFiltersAndRender() {
     const matchesSearch = !term || 
       p.name.toLowerCase().includes(term) || 
       p.sku.toLowerCase().includes(term) ||
+      (p.author && p.author.toLowerCase().includes(term)) ||
       (p.description && p.description.toLowerCase().includes(term));
     return matchesCat && matchesSearch;
   });
@@ -131,13 +134,30 @@ function renderProducts(items) {
   emptyState.style.display = 'none';
 
   grid.innerHTML = items.map(p => {
+    const isExternal = Boolean(p.externalUrl);
     const isUnpriced = !p.price || p.price <= 0;
-    const isOutOfStock = p.stock !== undefined && p.stock <= 0 && !isUnpriced;
+    const isOutOfStock = p.stock !== undefined && p.stock <= 0 && !isUnpriced && !isExternal;
 
     let priceHtml = '';
     let btnHtml = '';
 
-    if (isUnpriced) {
+    if (isExternal) {
+      const priceDisplay = p.priceUsd 
+        ? `${p.priceUsd} <span style="font-size:12px; font-weight:normal; color:#64748b;">(~${formatNaira(p.price)})</span>` 
+        : formatNaira(p.price);
+      priceHtml = `
+        <span class="price-tag">${priceDisplay}</span>
+        <span class="stock-status" style="background:#fffbeb; color:#b45309; border:1px solid #fde68a;">Amazon Kindle</span>
+      `;
+      btnHtml = `
+        <a href="${p.externalUrl}" target="_blank" rel="noopener noreferrer" class="add-cart-btn btn-amazon" title="Buy on Amazon (Kindle eBook)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14.5v-9l6 4.5-6 4.5z"/>
+          </svg>
+          Buy on Amazon ↗
+        </a>
+      `;
+    } else if (isUnpriced) {
       priceHtml = `<span class="unpriced-tag">Contact for Price</span>`;
       btnHtml = `<button class="add-cart-btn btn-inquire" data-sku="${p.sku}" data-action="inquire">💬 Inquire via WhatsApp</button>`;
     } else if (isOutOfStock) {
@@ -156,11 +176,13 @@ function renderProducts(items) {
         <div class="product-thumb">
           <img src="${p.image || '/assets/products/product-01.jpg'}" alt="${p.name}" loading="lazy" />
           ${p.featured ? '<span class="badge-tag flash">⚡ Flash Deal</span>' : ''}
-          ${isUnpriced ? '<span class="badge-tag unpriced">Catalogue Item</span>' : ''}
+          ${isExternal ? '<span class="badge-tag" style="background:#131921; color:#ff9900; font-weight:700;">📚 Amazon Book</span>' : ''}
+          ${isUnpriced && !isExternal ? '<span class="badge-tag unpriced">Catalogue Item</span>' : ''}
         </div>
         <div class="product-details">
           <span class="product-category">${p.category || 'General'}</span>
           <h3 class="product-title" title="${p.name}">${p.name}</h3>
+          ${p.author ? `<p style="font-size:12px; color:#64748b; margin:2px 0 6px 0; font-weight:600;">By ${p.author}</p>` : ''}
           <div class="product-price-row">
             ${priceHtml}
           </div>

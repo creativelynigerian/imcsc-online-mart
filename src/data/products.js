@@ -349,6 +349,22 @@ export const initialProducts = [
     "featured": false
   },
   {
+    "id": "prod-created-for-impact",
+    "sku": "IMCSC-BK-CFI",
+    "name": "CREATED FOR IMPACT: A Creative Wisdom digest for a winning youth",
+    "author": "Olukayode Jacob Daniel",
+    "description": "A transformative creative wisdom digest designed to inspire, equip, and empower winning youths to discover purpose, lead with insight, and make lasting impact. Available worldwide on Amazon Kindle.",
+    "price": 4500,
+    "priceUsd": "$2.99 USD",
+    "stock": 999,
+    "category": "books",
+    "image": "/assets/products/created-for-impact.jpg",
+    "status": "active",
+    "featured": true,
+    "externalUrl": "https://www.amazon.com/dp/B0GV1M6TK7?tag=ccyiglobal-20",
+    "externalPlatform": "Amazon Kindle"
+  },
+  {
     "id": "prod-textbook",
     "sku": "IMCSC-BK-ENG",
     "name": "English Language Textbook",

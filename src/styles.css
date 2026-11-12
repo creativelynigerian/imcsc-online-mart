@@ -453,6 +453,24 @@ body {
 .add-cart-btn.btn-inquire:hover {
   background: var(--gold-hover);
 }
+.add-cart-btn.btn-amazon {
+  background: #ff9900;
+  color: #111827;
+  border: 1px solid #e68a00;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-decoration: none;
+  font-weight: 800;
+  font-size: 14px;
+}
+.add-cart-btn.btn-amazon:hover {
+  background: #f08800;
+  color: #000;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(255, 153, 0, 0.35);
+}
 .add-cart-btn:disabled {
   background: #cbd5e1;
   color: #64748b;
