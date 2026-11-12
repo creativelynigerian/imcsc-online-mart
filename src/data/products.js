@@ -603,6 +603,56 @@ export const initialProducts = [
     "image": "/assets/products/IMG-24_Childrens_Underwear_Selling_NGN-1724.jpg",
     "status": "active",
     "featured": false
+  },
+  {
+    "id": "partner-geiso-uk",
+    "sku": "PARTNER-GEISO",
+    "name": "GEISO Enterprise (UK)",
+    "description": "Explore premium shopping, authentic African groceries, snacks, foods & provisions delivered across the United Kingdom.",
+    "price": 0,
+    "category": "partners",
+    "image": "/assets/products/geiso-partner.jpg",
+    "status": "active",
+    "featured": false,
+    "externalUrl": "https://shop.geisoenterprise.co.uk/",
+    "externalPlatform": "GEISO UK Store",
+    "badgeText": "🇬🇧 UK Partner Store",
+    "btnLabel": "Visit UK Store ↗",
+    "btnStyle": "background:#00247d; color:#fff;"
+  },
+  {
+    "id": "partner-selar-store",
+    "sku": "PARTNER-SELAR",
+    "name": "CCYI Global Digital Products (Selar)",
+    "description": "Shop our digital e-books, training courses, guides and creative digital assets on Selar — Nigeria's leading creator platform.",
+    "price": 0,
+    "category": "partners",
+    "image": "/assets/products/selar-partner.jpg",
+    "status": "active",
+    "featured": false,
+    "externalUrl": "https://selar.com/o1f41697r6",
+    "externalPlatform": "Selar Store",
+    "badgeText": "🛒 Selar Marketplace",
+    "btnLabel": "Shop on Selar ↗",
+    "btnStyle": "background:#581c87; color:#fff;"
+  },
+  {
+    "id": "partner-amazon-store",
+    "sku": "PARTNER-AMAZON-STORE",
+    "name": "Amazon Global Bookstore (Kindle)",
+    "author": "Olukayode Jacob Daniel",
+    "description": "Read 'Created for Impact: A Creative Wisdom digest for a winning youth' by Olukayode Jacob Daniel on Amazon Kindle worldwide.",
+    "price": 4500,
+    "priceUsd": "$2.99 USD",
+    "category": "partners",
+    "image": "/assets/products/created-for-impact.jpg",
+    "status": "active",
+    "featured": false,
+    "externalUrl": "https://www.amazon.com/dp/B0GV1M6TK7?tag=ccyiglobal-20",
+    "externalPlatform": "Amazon Kindle",
+    "badgeText": "📚 Amazon Kindle",
+    "btnLabel": "Buy on Amazon ↗",
+    "btnClass": "btn-amazon"
   }
 ];
 export const products = initialProducts;

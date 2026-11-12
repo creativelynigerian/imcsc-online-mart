@@ -238,6 +238,19 @@ body {
   font-weight: 800;
   box-shadow: 0 2px 6px rgba(212, 175, 55, 0.3);
 }
+.cat-pill.partner-pill {
+  border-color: var(--gold);
+  color: #fde047;
+  background: rgba(212, 175, 55, 0.16);
+  font-weight: 700;
+}
+.cat-pill.partner-pill:hover,
+.cat-pill.partner-pill.active {
+  background: var(--gold);
+  color: #132a13;
+  border-color: var(--gold);
+  box-shadow: 0 2px 8px rgba(212, 175, 55, 0.4);
+}
 
 /* Flash Ribbon */
 .flash-ribbon {

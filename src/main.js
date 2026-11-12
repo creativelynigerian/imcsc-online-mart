@@ -42,6 +42,8 @@ const searchInput = document.getElementById('search-input');
 const searchClearBtn = document.getElementById('search-clear-btn');
 const catPills = document.querySelectorAll('.cat-pill');
 const sortSelect = document.getElementById('sort-select');
+const catalogTitle = document.getElementById('catalog-title');
+const catalogSubtitle = document.getElementById('catalog-subtitle');
 
 // Confirmation modal
 const successModal = document.getElementById('success-modal');
@@ -96,7 +98,26 @@ async function loadProducts() {
 
 // 2. Filter & Sort Logic
 function applyFiltersAndRender() {
+  if (catalogTitle && catalogSubtitle) {
+    const titles = {
+      all: { title: 'All Products', sub: 'Showing available inventory from our Ota store' },
+      groceries: { title: 'Groceries & Foodstuffs', sub: 'Fresh, local, and packaged groceries from Covenant University' },
+      snacks: { title: 'Snacks & Quick Bites', sub: 'Crunchy kuli-kuli, spiced treats, and energy snacks' },
+      beauty: { title: 'Beauty & Personal Care', sub: 'Hair, skin, and wellness essentials' },
+      books: { title: 'Books & Literature', sub: 'Educational guides, storybooks, and Kindle publications' },
+      fashion: { title: 'Fashion & Accessories', sub: 'Clothing, wear, and lifestyle picks' },
+      partners: { title: 'Our Partner Stores', sub: 'Official international & digital partner stores by CCYI Global Enterprise' }
+    };
+    const current = titles[currentCategory] || { title: 'Products', sub: 'Explore our store inventory' };
+    catalogTitle.textContent = current.title;
+    catalogSubtitle.textContent = current.sub;
+  }
+
   let filtered = allProducts.filter(p => {
+    // If browsing "all" catalogue, omit partner store profile cards unless searching specifically
+    if (currentCategory === 'all' && p.category === 'partners' && !searchQuery) {
+      return false;
+    }
     // category filter
     const matchesCat = currentCategory === 'all' || p.category === currentCategory;
     // search filter
@@ -134,14 +155,25 @@ function renderProducts(items) {
   emptyState.style.display = 'none';
 
   grid.innerHTML = items.map(p => {
-    const isExternal = Boolean(p.externalUrl);
+    const isPartner = p.category === 'partners';
+    const isExternal = Boolean(p.externalUrl) || isPartner;
     const isUnpriced = !p.price || p.price <= 0;
     const isOutOfStock = p.stock !== undefined && p.stock <= 0 && !isUnpriced && !isExternal;
 
     let priceHtml = '';
     let btnHtml = '';
 
-    if (isExternal) {
+    if (isPartner) {
+      const badge = p.badgeText || '🌐 Official Partner';
+      priceHtml = `
+        <span class="stock-status" style="background:#f1f5f9; color:#0f172a; border:1px solid #cbd5e1; font-weight:700;">${badge}</span>
+      `;
+      btnHtml = `
+        <a href="${p.externalUrl}" target="_blank" rel="noopener noreferrer" class="add-cart-btn ${p.btnClass || ''}" style="${p.btnStyle || ''} text-decoration:none; display:flex; align-items:center; justify-content:center; gap:8px;" title="Visit ${p.name}">
+          ${p.btnLabel || 'Visit Store ↗'}
+        </a>
+      `;
+    } else if (isExternal) {
       const priceDisplay = p.priceUsd 
         ? `${p.priceUsd} <span style="font-size:12px; font-weight:normal; color:#64748b;">(~${formatNaira(p.price)})</span>` 
         : formatNaira(p.price);
@@ -176,11 +208,12 @@ function renderProducts(items) {
         <div class="product-thumb">
           <img src="${p.image || '/assets/products/product-01.jpg'}" alt="${p.name}" loading="lazy" />
           ${p.featured ? '<span class="badge-tag flash">⚡ Flash Deal</span>' : ''}
-          ${isExternal ? '<span class="badge-tag" style="background:#131921; color:#ff9900; font-weight:700;">📚 Amazon Book</span>' : ''}
+          ${isPartner ? `<span class="badge-tag" style="background:#0f172a; color:#f8fafc; font-weight:700;">${p.badgeText || '🤝 Partner'}</span>` : ''}
+          ${isExternal && !isPartner ? '<span class="badge-tag" style="background:#131921; color:#ff9900; font-weight:700;">📚 Amazon Book</span>' : ''}
           ${isUnpriced && !isExternal ? '<span class="badge-tag unpriced">Catalogue Item</span>' : ''}
         </div>
         <div class="product-details">
-          <span class="product-category">${p.category || 'General'}</span>
+          <span class="product-category">${isPartner ? 'Partner Store' : (p.category || 'General')}</span>
           <h3 class="product-title" title="${p.name}">${p.name}</h3>
           ${p.author ? `<p style="font-size:12px; color:#64748b; margin:2px 0 6px 0; font-weight:600;">By ${p.author}</p>` : ''}
           <div class="product-price-row">
