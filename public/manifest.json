@@ -1,24 +1,70 @@
 {
+  "id": "ng.com.ccyiglobalentweb.shop",
   "name": "Impact Makers CSC Mart",
   "short_name": "IMCSC Mart",
   "description": "Your trusted shopping destination for quality groceries, books, snacks, beauty, and fashion in Ogun State and across Nigeria.",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
   "background_color": "#0d3b1e",
   "theme_color": "#0d3b1e",
   "orientation": "portrait",
+  "lang": "en",
+  "categories": ["shopping", "food", "lifestyle"],
   "icons": [
     {
       "src": "/icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
     },
     {
       "src": "/icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshot-mobile.png",
+      "sizes": "540x960",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Mobile Storefront"
+    },
+    {
+      "src": "/screenshot-desktop.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Desktop Storefront"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Catalogue",
+      "url": "/#catalogue",
+      "description": "Browse all available store items",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Partner Stores",
+      "url": "/#partners",
+      "description": "Explore GEISO UK, Selar & Amazon stores",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
     }
   ]
 }
