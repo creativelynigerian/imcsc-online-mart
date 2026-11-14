@@ -413,30 +413,6 @@ export const initialProducts = [
     "externalPlatform": "Amazon Kindle"
   },
   {
-    "id": "prod-textbook",
-    "sku": "IMCSC-BK-ENG",
-    "name": "English Language Textbook",
-    "description": "Comprehensive English language textbook for secondary schools and exam preparation with grammar guides.",
-    "price": 7475,
-    "stock": 40,
-    "category": "books",
-    "image": "/assets/products/english-textbook.jpg",
-    "status": "active",
-    "featured": false
-  },
-  {
-    "id": "prod-storybook",
-    "sku": "IMCSC-BK-STR",
-    "name": "Childrens Storybook",
-    "description": "Beautifully illustrated hardcover moral bedtime children's storybook for early learning and reading.",
-    "price": 4600,
-    "stock": 35,
-    "category": "books",
-    "image": "/assets/products/childrens-storybook.jpg",
-    "status": "active",
-    "featured": false
-  },
-  {
     "id": "prod-02",
     "sku": "IMCSC-BE-02",
     "name": "Face Powder Compact",
