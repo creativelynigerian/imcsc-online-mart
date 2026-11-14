@@ -349,6 +349,22 @@ export const initialProducts = [
     "featured": false
   },
   {
+    "id": "prod-kingdom-fundamentals-singleness",
+    "sku": "IMCSC-BK-KFS",
+    "name": "THE KINGDOM FUNDAMENTALS OF SINGLENESS: Understanding Purpose, Identity, and Preparation in Christ",
+    "author": "Olukayode Daniel",
+    "description": "A profound spiritual and practical guide to understanding purpose, identity, and preparation in Christ during the season of singleness. Available worldwide on Amazon Kindle.",
+    "price": 9000,
+    "priceUsd": "$5.99 USD",
+    "stock": 999,
+    "category": "books",
+    "image": "/assets/products/kingdom-fundamentals-singleness.jpg",
+    "status": "active",
+    "featured": true,
+    "externalUrl": "https://www.amazon.com/dp/B0FBSDR1YG?tag=ccyiglobal-20",
+    "externalPlatform": "Amazon Kindle"
+  },
+  {
     "id": "prod-created-for-impact",
     "sku": "IMCSC-BK-CFI",
     "name": "CREATED FOR IMPACT: A Creative Wisdom digest for a winning youth",
