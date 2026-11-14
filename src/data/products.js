@@ -349,6 +349,22 @@ export const initialProducts = [
     "featured": false
   },
   {
+    "id": "prod-490-wordspired-insights",
+    "sku": "IMCSC-BK-490WI",
+    "name": "490 WORDSPIRED INSIGHTS OF KAY DANIELS",
+    "author": "Olukayode Daniel",
+    "description": "A rich collection of 490 profound, word-inspired insights and creative kingdom wisdom nuggets to illuminate your daily walk, purpose, and spiritual growth.",
+    "price": 10500,
+    "priceUsd": "$6.99 USD",
+    "stock": 999,
+    "category": "books",
+    "image": "/assets/products/490-wordspired-insights.jpg",
+    "status": "active",
+    "featured": true,
+    "externalUrl": "https://www.amazon.com/dp/B0GK2T3L2P?tag=ccyiglobal-20",
+    "externalPlatform": "Amazon Kindle"
+  },
+  {
     "id": "prod-kingdom-ambition",
     "sku": "IMCSC-BK-KA",
     "name": "KINGDOM AMBITION: The Spur that makes man struggle with destiny",
