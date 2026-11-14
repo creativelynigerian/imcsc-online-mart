@@ -349,6 +349,38 @@ export const initialProducts = [
     "featured": false
   },
   {
+    "id": "prod-kingdom-ambition",
+    "sku": "IMCSC-BK-KA",
+    "name": "KINGDOM AMBITION: The Spur that makes man struggle with destiny",
+    "author": "Olukayode Daniel",
+    "description": "An eye-opening revelatory work uncovering the spiritual impulses, spurs, and divine alignment needed to navigate personal ambition and eternal destiny in God.",
+    "price": 9000,
+    "priceUsd": "$5.99 USD",
+    "stock": 999,
+    "category": "books",
+    "image": "/assets/products/kingdom-ambition.jpg",
+    "status": "active",
+    "featured": true,
+    "externalUrl": "https://www.amazon.com/dp/B0FN7FDKD5?tag=ccyiglobal-20",
+    "externalPlatform": "Amazon Kindle"
+  },
+  {
+    "id": "prod-the-making-of-a-star",
+    "sku": "IMCSC-BK-MOS",
+    "name": "THE MAKING OF A STAR: The receipe on the wings of faith",
+    "author": "Olukayode Daniel",
+    "description": "Discover the spiritual and mindset ingredients required to soar beyond mediocrity and rise as a kingdom star through the transformative power of faith.",
+    "price": 4500,
+    "priceUsd": "$3.00 USD",
+    "stock": 999,
+    "category": "books",
+    "image": "/assets/products/the-making-of-a-star.jpg",
+    "status": "active",
+    "featured": true,
+    "externalUrl": "https://www.amazon.com/dp/B0GTYR6SKD?tag=ccyiglobal-20",
+    "externalPlatform": "Amazon Kindle"
+  },
+  {
     "id": "prod-kingdom-fundamentals-singleness",
     "sku": "IMCSC-BK-KFS",
     "name": "THE KINGDOM FUNDAMENTALS OF SINGLENESS: Understanding Purpose, Identity, and Preparation in Christ",
