@@ -314,7 +314,7 @@ function inquireWhatsApp(sku) {
   const text = encodeURIComponent(
     `Hello Impact Makers CSC Mart! I am interested in ordering: "${product ? product.name : sku}" (SKU: ${sku}). Please share the current price and availability.`
   );
-  window.open(`https://wa.me/2347035129387?text=${text}`, '_blank');
+  window.open(`https://wa.me/2348149537021?text=${text}`, '_blank');
 }
 
 // 6. Checkout Flow
@@ -539,8 +539,8 @@ checkoutForm.addEventListener('submit', async e => {
           <p><strong>Next Step for Bank Transfer:</strong></p>
           <p>Please send your payment receipt/screenshot on WhatsApp with your Order Reference <strong>${orderId}</strong>.</p>
           <p style="margin-top:10px;">
-            <a href="https://wa.me/2347035129387?text=${waText}" target="_blank" class="btn-primary" style="display:inline-block; text-decoration:none; padding:8px 16px; font-size:13px; background:#25d366; border:none;">
-              💬 Send Receipt on WhatsApp (+234 703 512 9387)
+            <a href="https://wa.me/2348149537021?text=${waText}" target="_blank" class="btn-primary" style="display:inline-block; text-decoration:none; padding:8px 16px; font-size:13px; background:#25d366; border:none;">
+              💬 Send Receipt on WhatsApp (+234 814 953 7021)
             </a>
           </p>
         `;
@@ -618,3 +618,44 @@ updateCartUI();
 
 // Then asynchronously check Firestore for live updates in the background
 loadProducts();
+
+// Register Service Worker for PWA
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').catch(err => {
+      console.info('ServiceWorker registration note:', err.message);
+    });
+  });
+}
+
+// PWA Install prompt handling
+let deferredPrompt = null;
+const installAppBtn = document.getElementById('install-app-btn');
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  if (installAppBtn) {
+    installAppBtn.style.display = 'inline-flex';
+  }
+});
+
+if (installAppBtn) {
+  installAppBtn.addEventListener('click', async () => {
+    if (!deferredPrompt) {
+      alert('To install, tap your browser menu (⋮ or Share) and select "Add to Home screen" or "Install App".');
+      return;
+    }
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    if (outcome === 'accepted') {
+      installAppBtn.style.display = 'none';
+    }
+    deferredPrompt = null;
+  });
+}
+
+window.addEventListener('appinstalled', () => {
+  if (installAppBtn) installAppBtn.style.display = 'none';
+  deferredPrompt = null;
+});
