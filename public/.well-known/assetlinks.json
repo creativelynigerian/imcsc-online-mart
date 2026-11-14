@@ -1,0 +1,8 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "ng.com.ccyiglobalentweb.shop",
+    "sha256_cert_fingerprints": ["68:D9:4D:AD:C6:15:8C:F7:FC:F1:6E:C4:E1:FB:04:07:F9:B0:64:9D:D5:A3:3F:9E:E1:75:30:16:77:98:54:C3"]
+  }
+}]
