@@ -635,23 +635,29 @@ const installAppBtn = document.getElementById('install-app-btn');
 window.addEventListener('beforeinstallprompt', (e) => {
   e.preventDefault();
   deferredPrompt = e;
-  if (installAppBtn) {
-    installAppBtn.style.display = 'inline-flex';
-  }
 });
 
 if (installAppBtn) {
   installAppBtn.addEventListener('click', async () => {
-    if (!deferredPrompt) {
-      alert('To install, tap your browser menu (⋮ or Share) and select "Add to Home screen" or "Install App".');
+    // 1. If standard browser PWA prompt is ready, trigger it
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      deferredPrompt = null;
       return;
     }
-    deferredPrompt.prompt();
-    const { outcome } = await deferredPrompt.userChoice;
-    if (outcome === 'accepted') {
-      installAppBtn.style.display = 'none';
+
+    // 2. If on Android (or PC), offer the direct native APK download
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    if (!isIOS) {
+      if (confirm('Download and install the official Impact Makers CSC Mart Android App (.APK)?')) {
+        window.location.href = '/Impact_Makers_CSC_Mart.apk';
+      }
+      return;
     }
-    deferredPrompt = null;
+
+    // 3. If on iPhone/iOS Safari, show easy instructions
+    alert('To install on iPhone:\n1. Tap the Share button (square with arrow up)\n2. Scroll down and tap "Add to Home Screen"\n3. Tap "Add"');
   });
 }
 
