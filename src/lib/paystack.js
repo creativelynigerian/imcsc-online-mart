@@ -1,8 +1,7 @@
 // Paystack Payment Client & Serverless Verification Helper
 
-// Replace with your Live or Test Paystack Public Key
-// Can be set in localStorage or Admin settings for easy toggling
-export const PAYSTACK_PUBLIC_KEY = localStorage.getItem('imcsc_paystack_pk') || 'pk_test_placeholder_key';
+// Live Paystack Public Key for CCYI Global Enterprise / Impact Makers CSC Mart
+export const PAYSTACK_PUBLIC_KEY = localStorage.getItem('imcsc_paystack_pk') || 'pk_live_0f400450678fd107c71034d4a9c2e3bfd8c185ac';
 
 /**
  * Initialize Paystack Inline Modal Payment
