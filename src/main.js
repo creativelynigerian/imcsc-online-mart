@@ -565,7 +565,38 @@ checkoutForm.addEventListener('submit', async e => {
         submitBtn.innerHTML = originalBtnHtml;
       }
     } else {
-      // Trigger Paystack Inline Payment
+      // Trigger Paystack Payment
+      // Try server-side redirect initialization first (standard checkout redirect)
+      try {
+        const initRes = await fetch('/api/initialize-payment', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email,
+            amount: Math.round(total * 100), // in Kobo
+            orderId,
+            metadata: {
+              customerName: name,
+              customerPhone: phone,
+              address: address,
+              orderData
+            }
+          })
+        });
+
+        const initData = await initRes.json();
+        if (initData && initData.status && initData.data && initData.data.authorization_url) {
+          // Redirect user to Paystack hosted checkout page
+          window.location.href = initData.data.authorization_url;
+          return;
+        } else {
+          console.warn('Server initialization returned non-redirect status, falling back to Inline Popup:', initData);
+        }
+      } catch (initErr) {
+        console.warn('Server initialize fetch error, falling back to Inline popup:', initErr);
+      }
+
+      // Fallback: Inline Popup
       if (submitBtn) {
         submitBtn.disabled = false;
         submitBtn.innerHTML = originalBtnHtml;

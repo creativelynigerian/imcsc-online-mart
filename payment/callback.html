@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Payment Verification — Impact Makers CSC Mart</title>
+  <link rel="icon" type="image/png" href="/favicon.png" />
+  <link rel="stylesheet" href="/src/styles.css" />
+  <style>
+    body {
+      background: var(--bg-light, #f8fafc);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      font-family: system-ui, -apple-system, sans-serif;
+      margin: 0;
+      padding: 16px;
+    }
+    .verify-box {
+      background: #ffffff;
+      padding: 36px 28px;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+      max-width: 480px;
+      width: 100%;
+      text-align: center;
+      border: 1px solid #e2e8f0;
+    }
+    .verify-spinner {
+      width: 48px;
+      height: 48px;
+      border: 4px solid #e2e8f0;
+      border-top-color: #0d3b1e;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 20px;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    .btn-return {
+      display: inline-block;
+      margin-top: 24px;
+      background: #0d3b1e;
+      color: #ffffff;
+      text-decoration: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+  <div class="verify-box">
+    <div id="spinner" class="verify-spinner"></div>
+    <h2 id="status-title">Verifying Payment...</h2>
+    <p id="status-desc" style="color: #64748b; font-size: 14px; margin-top: 8px;">
+      Please wait while we confirm your transaction with Paystack.
+    </p>
+    <a id="return-btn" href="/" class="btn-return" style="display:none;">Return to Shop</a>
+  </div>
+
+  <script type="module">
+    const urlParams = new URLSearchParams(window.location.search);
+    const reference = urlParams.get('reference') || urlParams.get('trxref');
+    const spinner = document.getElementById('spinner');
+    const title = document.getElementById('status-title');
+    const desc = document.getElementById('status-desc');
+    const returnBtn = document.getElementById('return-btn');
+
+    if (!reference) {
+      spinner.style.display = 'none';
+      title.textContent = 'No Transaction Reference';
+      desc.textContent = 'Could not find a valid payment reference. Return to store.';
+      returnBtn.style.display = 'inline-block';
+    } else {
+      fetch(`/api/verify-payment?reference=${encodeURIComponent(reference)}`)
+        .then(res => res.json())
+        .then(data => {
+          spinner.style.display = 'none';
+          if (data && (data.status === true || (data.data && data.data.status === 'success'))) {
+            title.textContent = '🎉 Payment Successful!';
+            title.style.color = '#15803d';
+            desc.innerHTML = `Your payment has been confirmed! <br>Reference: <strong>${reference}</strong>`;
+            // Clear cart
+            localStorage.removeItem('imcsc_cart');
+          } else {
+            title.textContent = 'Payment Unconfirmed';
+            title.style.color = '#b91c1c';
+            desc.textContent = data.message || 'Payment could not be verified automatically. If debited, please contact support with your reference.';
+          }
+          returnBtn.style.display = 'inline-block';
+        })
+        .catch(err => {
+          spinner.style.display = 'none';
+          title.textContent = 'Payment Status';
+          desc.textContent = 'Transaction complete. If your order was processed, our team will dispatch it shortly.';
+          returnBtn.style.display = 'inline-block';
+        });
+    }
+  </script>
+</body>
+</html>
