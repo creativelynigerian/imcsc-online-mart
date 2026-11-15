@@ -349,6 +349,22 @@ export const initialProducts = [
     "featured": false
   },
   {
+    "id": "prod-9-google-ai-tools",
+    "sku": "IMCSC-BK-9GAI",
+    "name": "9 GOOGLE AI TOOLS FOR THE NEXT LEVEL: Discover. Create. Innovate. Lead.",
+    "author": "Olukayode Daniel",
+    "description": "Unlock powerful productivity, creativity, and leadership with 9 game-changing Google AI tools designed to take your work, business, and thinking to the next level.",
+    "price": 3500,
+    "stock": 999,
+    "category": "books",
+    "image": "/assets/products/9-google-ai-tools.jpg",
+    "status": "active",
+    "featured": true,
+    "externalUrl": "https://selar.com/o1f41697r6",
+    "externalPlatform": "Selar",
+    "badgeText": "🛒 Digital Product"
+  },
+  {
     "id": "prod-490-wordspired-insights",
     "sku": "IMCSC-BK-490WI",
     "name": "490 WORDSPIRED INSIGHTS OF KAY DANIELS",

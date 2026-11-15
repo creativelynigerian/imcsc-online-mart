@@ -178,21 +178,34 @@ function renderProducts(items) {
         </a>
       `;
     } else if (isExternal) {
+      const isSelar = p.externalPlatform === 'Selar' || (p.externalUrl && p.externalUrl.includes('selar.com'));
       const priceDisplay = p.priceUsd 
         ? `${p.priceUsd} <span style="font-size:12px; font-weight:normal; color:#64748b;">(~${formatNaira(p.price)})</span>` 
         : formatNaira(p.price);
+      
+      const platformBadge = isSelar
+        ? `<span class="stock-status" style="background:#f3e8ff; color:#6b21a8; border:1px solid #d8b4fe; font-weight:700;">Selar Digital</span>`
+        : `<span class="stock-status" style="background:#fffbeb; color:#b45309; border:1px solid #fde68a;">Amazon Kindle</span>`;
+      
       priceHtml = `
         <span class="price-tag">${priceDisplay}</span>
-        <span class="stock-status" style="background:#fffbeb; color:#b45309; border:1px solid #fde68a;">Amazon Kindle</span>
+        ${platformBadge}
       `;
-      btnHtml = `
-        <a href="${p.externalUrl}" target="_blank" rel="noopener noreferrer" class="add-cart-btn btn-amazon" title="Buy on Amazon (Kindle eBook)">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14.5v-9l6 4.5-6 4.5z"/>
-          </svg>
-          Buy on Amazon ↗
-        </a>
-      `;
+      
+      btnHtml = isSelar
+        ? `
+          <a href="${p.externalUrl}" target="_blank" rel="noopener noreferrer" class="add-cart-btn" style="background:#581c87; color:#fff; text-decoration:none; display:flex; align-items:center; justify-content:center; gap:8px;" title="Get on Selar">
+            🛒 Get on Selar ↗
+          </a>
+        `
+        : `
+          <a href="${p.externalUrl}" target="_blank" rel="noopener noreferrer" class="add-cart-btn btn-amazon" title="Buy on Amazon (Kindle eBook)">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14.5v-9l6 4.5-6 4.5z"/>
+            </svg>
+            Buy on Amazon ↗
+          </a>
+        `;
     } else if (isUnpriced) {
       priceHtml = `<span class="unpriced-tag">Contact for Price</span>`;
       btnHtml = `<button class="add-cart-btn btn-inquire" data-sku="${p.sku}" data-action="inquire">💬 Inquire via WhatsApp</button>`;
