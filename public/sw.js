@@ -1,5 +1,5 @@
 // Service Worker for Impact Makers CSC Mart PWA
-const CACHE_NAME = 'imcsc-mart-v2';
+const CACHE_NAME = 'imcsc-mart-v3';
 const STATIC_ASSETS = [
   '/',
   '/index.html',
